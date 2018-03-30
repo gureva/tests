@@ -12,17 +12,12 @@ namespace WebAddressbookTests
         [Test]
         public void AddContactTest()
         {
-            OpenHomePage();
-            Login(new AccountData("admin", "secret"));
-            GoToAddContactPage();
-
             //Contact init
             ContactData contact = new ContactData("Iva34n","I53anov");
-
-            FillContactForm(contact);
-            SubmitContactCreation();
-            ReturnToHomePage();
-            Logout();
+            AccountData account = new AccountData("f", "d");
+            app.Contacts.Create(contact);
+            app.Navigator.ReturnToHomePage();
+            app.Auth.Logout();
         }    
     }
 }
