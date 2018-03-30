@@ -21,9 +21,14 @@ namespace WebAddressbookTests
             driver.FindElement(By.LinkText("groups")).Click();
         }
 
-        public void OpenHomePage()
+        public void OpenAddressBook()
         {
             driver.Navigate().GoToUrl(baseURL + "addressbook/");
+        }
+
+        public void OpenHomePage()
+        {
+            driver.FindElement(By.LinkText("home")).Click();
         }
 
         public void GoToAddContactPage()
