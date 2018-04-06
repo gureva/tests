@@ -18,6 +18,11 @@ namespace WebAddressbookTests
 
         public void GoToGroupsPage()
         {
+            if (driver.Url == baseURL + "addressbook/group.php"
+                && IsElementPresent(By.Name("new")))
+            {
+                return;
+            }
             driver.FindElement(By.LinkText("groups")).Click();
         }
 
@@ -28,12 +33,21 @@ namespace WebAddressbookTests
 
         public void OpenHomePage()
         {
+            if (driver.Url == baseURL + "addressbook/")
+            {
+                return;
+            }
             driver.FindElement(By.LinkText("home")).Click();
         }
 
         public void GoToAddContactPage()
         {
-            driver.FindElement(By.LinkText("add new")).Click();
+            if (driver.Url == baseURL + "addressbook/edit.php"
+               && IsElementPresent(By.Name("firstname")))
+            {
+                return;
+            }
+                driver.FindElement(By.LinkText("add new")).Click();            
         }
 
         public void ReturnToHomePage()

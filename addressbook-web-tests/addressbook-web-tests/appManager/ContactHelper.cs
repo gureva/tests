@@ -18,15 +18,37 @@ namespace WebAddressbookTests
             manager.Navigator.GoToAddContactPage();
             FillContactForm(contact);
             SubmitContactCreation();
+            manager.Navigator.ReturnToHomePage();
             return this;
-        }
+        }        
+
         //удалить из общего списка
         public ContactHelper Remove(int index)
         {
             manager.Navigator.OpenHomePage();
-            SelectContact(index);
+            if (IsContactListEmpty() || !IsIndex(index))
+            {
+                ContactData contact = new ContactData("Test", "Remove");
+                Create(contact);
+                SelectContact(1);
+            }
+            else
+            {
+                SelectContact(index);
+            }
+
             RemoveContact();
             return this;
+        }
+
+        //проверка на пустой список контактов
+        public bool IsContactListEmpty()
+        {
+            if (driver.FindElement(By.CssSelector("label")).Text == "Number of results: 0")
+            {
+                return true;
+            }
+            else return false;           
         }
 
         // удалить при редактировании
@@ -38,10 +60,21 @@ namespace WebAddressbookTests
             return this;
         }
         
-            public ContactHelper Edit(int index, ContactData contact)
+        public ContactHelper Edit(int index, ContactData contact)
         {
             manager.Navigator.OpenHomePage();
-            EditContact(index);
+            if (IsContactListEmpty() || !IsIndex(index))
+            {
+                
+                ContactData CRcontact = new ContactData("Test", "Edit");
+                Create(CRcontact);
+                EditContact(1);
+            }
+            else
+            {
+                EditContact(index);
+            }
+
             FillContactForm(contact);
             SubmitContactEdition();
             manager.Navigator.ReturnToHomePage();
@@ -56,10 +89,8 @@ namespace WebAddressbookTests
 
         public ContactHelper FillContactForm(ContactData contact)
         {
-            driver.FindElement(By.Name("firstname")).Clear();
-            driver.FindElement(By.Name("firstname")).SendKeys(contact.FirstName);
-            driver.FindElement(By.Name("lastname")).Clear();
-            driver.FindElement(By.Name("lastname")).SendKeys(contact.LastName);
+            Type(By.Name("firstname"), contact.FirstName);
+            Type(By.Name("lastname"), contact.LastName);            
             return this;
         }
 

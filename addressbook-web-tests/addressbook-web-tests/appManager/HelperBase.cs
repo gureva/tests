@@ -19,5 +19,36 @@ namespace WebAddressbookTests
             //получил ссылку у менеджера
             this.driver = manager.Driver;
         }
+
+        public void Type(By locator, string text)
+        {
+            if (text != null)
+            {
+                driver.FindElement(locator).Clear();
+                driver.FindElement(locator).SendKeys(text);
+            }
+        }
+        //есть ли указанный элемент
+        public bool IsIndex(int index)
+         {
+            if (IsElementPresent(By.XPath("(.//input[@name='selected[]'])[" + index + "]")))
+            {
+                return true;
+            }
+            else return false;
+        }
+
+        public bool IsElementPresent(By by)
+        {
+            try
+            {
+                driver.FindElement(by);
+                return true;
+            }
+            catch (NoSuchElementException)
+            {
+                return false;
+            }
+        }
     }
 }

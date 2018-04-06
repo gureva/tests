@@ -23,13 +23,24 @@ namespace WebAddressbookTests
 
             return this;
         }
-
+        
         public GroupHelper Remove(int index)
         {
             manager.Navigator.GoToGroupsPage();
-            SelectGroup(index);
-            RemoveGroup();            
-            ReturnToGroupsPage();
+
+            if (IsIndex(index) || IsGroupListEmpty())
+            {
+                SelectGroup(index);
+            }
+
+            else
+            {                
+                 GroupData gr = new GroupData("REM");
+                 Create(gr);
+                 SelectGroup(1);                
+            }
+            RemoveGroup();
+            ReturnToGroupsPage();            
 
             return this;
         }
@@ -37,13 +48,32 @@ namespace WebAddressbookTests
         public GroupHelper Modify(int index, GroupData group)
         {
             manager.Navigator.GoToGroupsPage();
-            SelectGroup(index);
+            if (IsIndex(index) || IsGroupListEmpty())
+            {
+                SelectGroup(index);
+            }
+            else
+            {
+                GroupData gr = new GroupData("MODIF");
+                Create(gr);
+                SelectGroup(1);
+            }
             InitGroupModification();
             FillGroupForm(group);
             SubmitGroupModification();
             ReturnToGroupsPage();
 
             return this;
+        }
+
+        //проверка на пустой список контактов
+        public bool IsGroupListEmpty()
+        {
+            if (IsElementPresent(By.XPath("(.//input[@name='selected[]'])[1]")))
+            {
+                return false;
+            }
+            else return true;
         }
 
         public GroupHelper ReturnToGroupsPage()
@@ -84,12 +114,9 @@ namespace WebAddressbookTests
 
         public GroupHelper FillGroupForm(GroupData group)
         {
-            driver.FindElement(By.Name("group_name")).Clear();
-            driver.FindElement(By.Name("group_name")).SendKeys(group.Name);
-            driver.FindElement(By.Name("group_header")).Clear();
-            driver.FindElement(By.Name("group_header")).SendKeys(group.Header);
-            driver.FindElement(By.Name("group_footer")).Clear();
-            driver.FindElement(By.Name("group_footer")).SendKeys(group.Footer);
+            Type(By.Name("group_name"), group.Name);
+            Type(By.Name("group_header"), group.Header);
+            Type(By.Name("group_footer"), group.Footer);
             return this;
         }
 
