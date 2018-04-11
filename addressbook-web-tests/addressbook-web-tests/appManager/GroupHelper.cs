@@ -23,22 +23,21 @@ namespace WebAddressbookTests
 
             return this;
         }
-        
+
+        public int CreateSomeGroup()
+        {
+            GroupData gr = new GroupData("Test");
+            Create(gr);
+            int index = 1;
+
+            return index;
+        }
+
         public GroupHelper Remove(int index)
         {
             manager.Navigator.GoToGroupsPage();
 
-            if (IsIndex(index) || IsGroupListEmpty())
-            {
-                SelectGroup(index);
-            }
-
-            else
-            {                
-                 GroupData gr = new GroupData("REM");
-                 Create(gr);
-                 SelectGroup(1);                
-            }
+            SelectGroup(index);                    
             RemoveGroup();
             ReturnToGroupsPage();            
 
@@ -48,16 +47,8 @@ namespace WebAddressbookTests
         public GroupHelper Modify(int index, GroupData group)
         {
             manager.Navigator.GoToGroupsPage();
-            if (IsIndex(index) || IsGroupListEmpty())
-            {
-                SelectGroup(index);
-            }
-            else
-            {
-                GroupData gr = new GroupData("MODIF");
-                Create(gr);
-                SelectGroup(1);
-            }
+            
+            SelectGroup(index);            
             InitGroupModification();
             FillGroupForm(group);
             SubmitGroupModification();
@@ -69,6 +60,7 @@ namespace WebAddressbookTests
         //проверка на пустой список контактов
         public bool IsGroupListEmpty()
         {
+            manager.Navigator.GoToGroupsPage();
             if (IsElementPresent(By.XPath("(.//input[@name='selected[]'])[1]")))
             {
                 return false;

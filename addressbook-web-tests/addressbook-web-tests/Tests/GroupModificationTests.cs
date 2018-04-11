@@ -19,8 +19,17 @@ namespace WebAddressbookTests
             changed.Header = null;
             changed.Footer = "05";
 
-            app.Groups.Modify(1, changed);
-           // app.Auth.Logout();
+            //номер группы для мофикации
+            int index = 4;
+
+            if (app.Groups.IsGroupListEmpty() || !app.Groups.IsIndex(index, 2))
+            {
+                index = app.Groups.CreateSomeGroup();
+            }
+
+            app.Groups.Modify(index, changed);
+            // app.Auth.Logout();
+
         }
     }
 }

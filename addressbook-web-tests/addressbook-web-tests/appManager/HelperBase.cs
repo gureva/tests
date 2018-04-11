@@ -29,12 +29,24 @@ namespace WebAddressbookTests
             }
         }
         //есть ли указанный элемент
-        public bool IsIndex(int index)
+        public bool IsIndex(int index, int page)
          {
-            if (IsElementPresent(By.XPath("(.//input[@name='selected[]'])[" + index + "]")))
+            //1 - для контактов
+            if (page == 1)
             {
-                return true;
+                manager.Navigator.OpenHomePage();
+
             }
+            //2 - для групп
+            if (page == 2)
+            {
+                manager.Navigator.GoToGroupsPage();
+            }
+
+            if (IsElementPresent(By.XPath("(.//input[@name='selected[]'])[" + index + "]")))
+                {
+                    return true;
+                }
             else return false;
         }
 

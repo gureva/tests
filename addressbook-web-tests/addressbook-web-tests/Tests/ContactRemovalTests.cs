@@ -13,14 +13,29 @@ namespace WebAddressbookTests
         [Test]
         public void ContactRemovalTest()
         {
-            app.Contacts.Remove(1);
+            //Номер контакта для удаления
+            int index = 2;
+
+            if (app.Contacts.IsContactListEmpty() || !app.Contacts.IsIndex(index, 1))
+            {
+                index = app.Contacts.CreateSomeContact();
+            }
+             
+            app.Contacts.Remove(index);
             //app.Auth.Logout();
         }
 
         [Test]
         public void DeleteContactTest()
         {
-            app.Contacts.Delete(1);
+            int index = 2;
+
+            if (app.Contacts.IsContactListEmpty() || !app.Contacts.IsIndex(index, 1))
+            {
+                index = app.Contacts.CreateSomeContact();
+            }
+
+            app.Contacts.Delete(index);
             //app.Auth.Logout();
         }
     }

@@ -26,24 +26,26 @@ namespace WebAddressbookTests
         public ContactHelper Remove(int index)
         {
             manager.Navigator.OpenHomePage();
-            if (IsContactListEmpty() || !IsIndex(index))
-            {
-                ContactData contact = new ContactData("Test", "Remove");
-                Create(contact);
-                SelectContact(1);
-            }
-            else
-            {
-                SelectContact(index);
-            }
-
+            SelectContact(index);
             RemoveContact();
+
             return this;
+        }
+
+        public int CreateSomeContact()
+        {
+            ContactData contact = new ContactData("Test", "Remove");
+            Create(contact);
+            int index = 1;
+
+            return index;
         }
 
         //проверка на пустой список контактов
         public bool IsContactListEmpty()
         {
+            manager.Navigator.OpenHomePage();
+
             if (driver.FindElement(By.CssSelector("label")).Text == "Number of results: 0")
             {
                 return true;
@@ -62,19 +64,8 @@ namespace WebAddressbookTests
         
         public ContactHelper Edit(int index, ContactData contact)
         {
-            manager.Navigator.OpenHomePage();
-            if (IsContactListEmpty() || !IsIndex(index))
-            {
-                
-                ContactData CRcontact = new ContactData("Test", "Edit");
-                Create(CRcontact);
-                EditContact(1);
-            }
-            else
-            {
-                EditContact(index);
-            }
-
+            manager.Navigator.OpenHomePage();          
+            EditContact(index);
             FillContactForm(contact);
             SubmitContactEdition();
             manager.Navigator.ReturnToHomePage();

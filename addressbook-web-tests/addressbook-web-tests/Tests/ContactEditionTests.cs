@@ -14,9 +14,17 @@ namespace WebAddressbookTests
         [Test]
         public void ContactEditionTest()
         {
+            //Номер контакта для редактирования
+            int index = 2;
+
+            if (app.Contacts.IsContactListEmpty() || !app.Contacts.IsIndex(index,1))
+            {
+                index = app.Contacts.CreateSomeContact();
+            }
+
             ContactData contact = new ContactData("Liza", "Jhons");
 
-            app.Contacts.Edit(1, contact);
+            app.Contacts.Edit(index, contact);
             //app.Auth.Logout();
         }
     }
