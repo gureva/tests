@@ -20,8 +20,16 @@ namespace WebAddressbookTests
             {
                 index = app.Contacts.CreateSomeContact();
             }
-             
+
+            List<ContactData> oldContacts = app.Contacts.GetContactList();
+
             app.Contacts.Remove(index);
+
+            List<ContactData> newContacts = app.Contacts.GetContactList();
+            oldContacts.RemoveAt(index - 1);
+            oldContacts.Sort();
+            newContacts.Sort();
+            Assert.AreEqual(oldContacts, newContacts);
             //app.Auth.Logout();
         }
 
@@ -35,7 +43,15 @@ namespace WebAddressbookTests
                 index = app.Contacts.CreateSomeContact();
             }
 
+            List<ContactData> oldContacts = app.Contacts.GetContactList();
+
             app.Contacts.Delete(index);
+
+            List<ContactData> newContacts = app.Contacts.GetContactList();
+            oldContacts.RemoveAt(index - 1);
+            oldContacts.Sort();
+            newContacts.Sort();
+            Assert.AreEqual(oldContacts, newContacts);
             //app.Auth.Logout();
         }
     }

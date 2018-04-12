@@ -26,11 +26,24 @@ namespace WebAddressbookTests
 
         public int CreateSomeGroup()
         {
-            GroupData gr = new GroupData("Test");
+            GroupData gr = new GroupData("123");
             Create(gr);
             int index = 1;
 
             return index;
+        }
+
+        public List<GroupData> GetGroupList()
+        {
+            List<GroupData> groups = new List<GroupData>();
+            manager.Navigator.GoToGroupsPage();
+            ICollection<IWebElement> elements = driver.FindElements(By.CssSelector("span.group"));
+            foreach (IWebElement element in elements)
+            {
+                groups.Add(new GroupData(element.Text));
+            }
+
+            return groups;
         }
 
         public GroupHelper Remove(int index)

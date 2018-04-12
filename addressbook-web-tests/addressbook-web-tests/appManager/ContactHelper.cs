@@ -34,7 +34,7 @@ namespace WebAddressbookTests
 
         public int CreateSomeContact()
         {
-            ContactData contact = new ContactData("Test", "Remove");
+            ContactData contact = new ContactData("123", "Remove");
             Create(contact);
             int index = 1;
 
@@ -51,6 +51,26 @@ namespace WebAddressbookTests
                 return true;
             }
             else return false;           
+        }
+
+        public List<ContactData> GetContactList()
+        {
+            List<ContactData> contacts = new List<ContactData>();
+            manager.Navigator.OpenHomePage();
+            
+            ICollection<IWebElement> elements = driver.FindElements(By.Name("entry"));
+            IWebElement fname;
+            IWebElement lname;
+            int i = 2;
+            foreach(IWebElement element in elements)
+            {
+                 fname = element.FindElement(By.XPath("//tr["+ i +"]/td[2]"));
+                 lname = element.FindElement(By.XPath("//tr[" + i + "]/td[3]"));
+                i++;
+                contacts.Add(new ContactData(lname.Text, fname.Text));
+            }
+
+            return contacts;
         }
 
         // удалить при редактировании
