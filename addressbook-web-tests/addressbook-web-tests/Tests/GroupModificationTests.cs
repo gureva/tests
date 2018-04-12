@@ -31,11 +31,25 @@ namespace WebAddressbookTests
 
             app.Groups.Modify(index, changed);
 
+            Assert.AreEqual(oldGroups.Count , app.Groups.GetGroupCount());
+
             List<GroupData> newGroups = app.Groups.GetGroupList();
+
+            GroupData toBeModified = oldGroups[index - 1];
+
+
             oldGroups[index - 1].Name = changed.Name;
             oldGroups.Sort();
             newGroups.Sort();
             Assert.AreEqual(oldGroups, newGroups);
+
+            foreach (GroupData group in newGroups)
+            {
+                if (group.Id == toBeModified.Id)
+                {
+                    Assert.AreEqual(changed.Name, group.Name);
+                }
+            }
             // app.Auth.Logout();
 
         }

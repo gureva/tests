@@ -28,9 +28,16 @@ namespace WebAddressbookTests
             manager.Navigator.OpenHomePage();
             SelectContact(index);
             RemoveContact();
+            manager.Navigator.OpenHomePage();
 
             return this;
         }
+
+        public int GetContactCount()
+        {
+            return driver.FindElements(By.Name("entry")).Count;
+        }
+
 
         public int CreateSomeContact()
         {
@@ -53,24 +60,33 @@ namespace WebAddressbookTests
             else return false;           
         }
 
+        private List<ContactData> contactCash = null;
+
         public List<ContactData> GetContactList()
         {
-            List<ContactData> contacts = new List<ContactData>();
-            manager.Navigator.OpenHomePage();
-            
-            ICollection<IWebElement> elements = driver.FindElements(By.Name("entry"));
-            IWebElement fname;
-            IWebElement lname;
-            int i = 2;
-            foreach(IWebElement element in elements)
+
+            if (contactCash == null)
             {
-                 fname = element.FindElement(By.XPath("//tr["+ i +"]/td[2]"));
-                 lname = element.FindElement(By.XPath("//tr[" + i + "]/td[3]"));
-                i++;
-                contacts.Add(new ContactData(lname.Text, fname.Text));
+                contactCash = new List<ContactData>();
+
+                List<ContactData> contacts = new List<ContactData>();
+                manager.Navigator.OpenHomePage();
+
+                ICollection<IWebElement> elements = driver.FindElements(By.Name("entry"));
+                IWebElement fname;
+                IWebElement lname;
+                int i = 2;
+                foreach (IWebElement element in elements)
+                {
+                    fname = element.FindElement(By.XPath("//tr[" + i + "]/td[2]"));
+                    lname = element.FindElement(By.XPath("//tr[" + i + "]/td[3]"));
+                    i++;
+                    contactCash.Add(new ContactData(lname.Text, fname.Text) {
+                        Id = element.FindElement(By.TagName("input")).GetAttribute("value")});
+                }
             }
 
-            return contacts;
+            return new List<ContactData> (contactCash);
         }
 
         // удалить при редактировании
@@ -79,6 +95,8 @@ namespace WebAddressbookTests
             manager.Navigator.OpenHomePage();
             EditContact(index);
             DeleteContact();
+            manager.Navigator.OpenHomePage();
+
             return this;
         }
         
@@ -95,6 +113,8 @@ namespace WebAddressbookTests
         public ContactHelper SubmitContactCreation()
         {
             driver.FindElement(By.Name("submit")).Click();
+            contactCash = null;
+
             return this;
         }
 
@@ -115,12 +135,14 @@ namespace WebAddressbookTests
         {
             driver.FindElement(By.XPath("//input[@value='Delete']")).Click();
             driver.SwitchTo().Alert().Accept();
+            contactCash = null;
             return this;
         }
 
         public ContactHelper DeleteContact()
         {
             driver.FindElement(By.XPath("(//input[@name='update'])[3]")).Click();
+            contactCash = null;
             return this;
         }
 
@@ -133,6 +155,7 @@ namespace WebAddressbookTests
         public ContactHelper SubmitContactEdition()
         {
             driver.FindElement(By.XPath("(//input[@name='update'])[2]")).Click();
+            contactCash = null;
             return this;
         }
     }

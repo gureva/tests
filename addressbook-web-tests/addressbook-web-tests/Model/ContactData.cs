@@ -8,22 +8,10 @@ namespace WebAddressbookTests
 {
     public class ContactData : IEquatable<ContactData>, IComparable<ContactData>
     {
-        private string firstName;
-        private string lastName;
-        /*
-        private string middleName;
-        private string nickName;
-        private string companyTitle;
-        private string companyAddress;
-        private string email;
-        private string mobilePhone;
-        private string homePhone;
-        */
-
-        public ContactData(string firstName, string lastName)
+       public ContactData(string firstName, string lastName)
         {
-            this.firstName = firstName;
-            this.lastName = lastName;
+           FirstName = firstName;
+           LastName = lastName;
         }
 
         public bool Equals(ContactData other)
@@ -59,28 +47,10 @@ namespace WebAddressbookTests
             return "Name: "  + LastName + " " + FirstName;
         }
 
-        public string FirstName
-        {
-            get
-            {
-                return firstName;
-            }
-            set
-            {
-                firstName = value;
-            }
-        }
+        public string FirstName { get; set; }
+        
+        public string LastName { get; set; }
 
-        public string LastName
-        {
-            get
-            {
-                return lastName;
-            }
-            set
-            {
-                lastName = value;
-            }
-        }
+        public string Id { get; set; }
     }
 }
