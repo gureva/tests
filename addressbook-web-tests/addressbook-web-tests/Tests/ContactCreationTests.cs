@@ -17,7 +17,7 @@ namespace WebAddressbookTests
         public static IEnumerable<ContactData> RandomContactDataProvider()
         {
             List<ContactData>contacts = new List<ContactData>();
-            for (int i = 0; i < 5; i++)
+            for (int i = 0; i < 4; i++)
             {
                 contacts.Add(new ContactData(GenerateRandomString(30), GenerateRandomString(30))
                 {
@@ -41,7 +41,7 @@ namespace WebAddressbookTests
                 (File.ReadAllText(@"contacts.json"));
         }
 
-        [Test, TestCaseSource("ContactDataFromXmlFile")]
+        [Test, TestCaseSource("ContactDataFromJsonFile")]
         public void AddContactTest(ContactData contact)
         {
             List<ContactData> oldContacts = app.Contacts.GetContactList();

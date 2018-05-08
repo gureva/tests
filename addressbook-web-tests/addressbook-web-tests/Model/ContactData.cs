@@ -1,9 +1,11 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Xml.Serialization;
 
 namespace WebAddressbookTests
 {
@@ -155,8 +157,8 @@ namespace WebAddressbookTests
             }
             else
                 return st.Trim();
-        }        
-        
+        }
+        [XmlIgnore] [JsonIgnore]
         public string InfoFormString
         {
             get
