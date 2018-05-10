@@ -143,11 +143,11 @@ namespace WebAddressbookTests
 
             string info = driver.FindElement(By.Id("content")).Text;
 
-            return Regex.Replace(info, "[ \r\nH:M:P:F:W:]", "");
+            return Regex.Replace(info, "[\r\n]", "");
         }
 
-            //удалить из общего списка
-            public ContactHelper Remove(int index)
+        //удалить из общего списка
+        public ContactHelper Remove(int index)
         {
             manager.Navigator.OpenHomePage();
             SelectContact(index);

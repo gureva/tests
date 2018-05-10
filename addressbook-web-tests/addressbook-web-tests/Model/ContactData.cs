@@ -17,6 +17,8 @@ namespace WebAddressbookTests
 
         private string allEmails;
 
+        private string infoFormString;
+
         public ContactData() { }
 
         public ContactData(string firstName, string lastName)
@@ -172,37 +174,70 @@ namespace WebAddressbookTests
 
         private string iS(string st)
         {
-            if (st == null || st == "")
+            if (string.IsNullOrEmpty(st))
             {
                 return null;
             }
-            else
-                return st.Trim();
+             else return st;                                   
         }
+
         [XmlIgnore] [JsonIgnore]
         public string InfoFormString
         {
             get
             {
-                return
-                    iS(FirstName) + iS(MiddleName) + iS(LastName)
+				if (infoFormString != null)
+                {
+                    return infoFormString;
+                }
+				
+			    else
+				{
+                    infoFormString = FirstName + " ";
+                    if (!string.IsNullOrEmpty(MiddleName))
+                    {
+                        infoFormString = infoFormString +  MiddleName + " ";
+                    }
+
+                    infoFormString = infoFormString + LastName
                      + iS(NickName)
                      + iS(Title)
                      + iS(Company)
-                     + iS(Address)
-                     + iS(HomePhone)
-                     + iS(MobilePhone)
-                     + iS(WorkPhone)
-                     + iS(Fax)
-                     + iS(Email) 
-                     + iS(AddressSec)
-                     + iS(HomeSec)
-                     + iS(NoteSec) ;
-            }
-            set
-            {
-                InfoFormString = value;
-            }
+                     + iS(Address);					 
+					 
+                    if (!string.IsNullOrEmpty(HomePhone)) 
+					{
+                        infoFormString = infoFormString + "H: " + HomePhone.Trim();
+					}
+                    if (!string.IsNullOrEmpty(MobilePhone)) 
+					{
+                        infoFormString = infoFormString + "M: " + MobilePhone.Trim();
+					}
+                    if (!string.IsNullOrEmpty(WorkPhone) ) 
+					{
+                        infoFormString = infoFormString + "W: " + WorkPhone.Trim();
+					}
+                    if (!string.IsNullOrEmpty(Fax)) 
+					{
+                        infoFormString = infoFormString + "F: " + Fax.Trim();
+					}
+
+                    infoFormString = infoFormString + iS(Email) + iS(Email2) + iS(Email3) + iS(AddressSec);
+
+                    if (!string.IsNullOrEmpty(HomeSec)) 
+					{
+                        infoFormString = infoFormString + "P: " + HomeSec.Trim();
+					}
+
+                    infoFormString = infoFormString + iS(NoteSec);					 
+				
+                    return infoFormString;
+				} 
+			}	
+			set		
+			{
+                infoFormString = value;
+			}			
         }
 
         [Column (Name = "deprecated")]

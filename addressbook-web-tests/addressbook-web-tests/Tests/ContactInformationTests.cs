@@ -27,7 +27,7 @@ namespace WebAddressbookTests
         [Test]
         public void ContactView()
         {
-            int index = 3;
+            int index = 1;
             ContactData fromForm = app.Contacts.GetContactInfoFromEditForm(index);
 
             Assert.AreEqual(fromForm.InfoFormString, app.Contacts.GetContactInfoFromView(index));
