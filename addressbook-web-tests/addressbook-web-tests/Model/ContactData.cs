@@ -52,7 +52,14 @@ namespace WebAddressbookTests
                 return 1;
             }
 
-            return LastName.CompareTo(other.LastName) + FirstName.CompareTo(other.FirstName);
+            int compareLastname = LastName.CompareTo(other.LastName);
+
+            if (compareLastname == 0)
+            {
+                return FirstName.CompareTo(other.FirstName);
+            }
+            return compareLastname;
+            
         }
 
         public override string ToString()

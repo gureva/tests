@@ -32,6 +32,5 @@ namespace WebAddressbookTests
 
             Assert.AreEqual(fromForm.InfoFormString, app.Contacts.GetContactInfoFromView(index));
         }
-
     }
 }
