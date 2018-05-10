@@ -5,14 +5,14 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using OpenQA.Selenium;
+using OpenQA.Selenium.Support.UI;
 
 namespace WebAddressbookTests
 {
     public class ContactHelper : HelperBase
     {
         public ContactHelper(ApplicationManager manager) : base(manager)
-        {
-        }
+        {}
 
         public ContactHelper Create(ContactData contact)
         {
@@ -21,6 +21,32 @@ namespace WebAddressbookTests
             SubmitContactCreation();
             manager.Navigator.ReturnToHomePage();
             return this;
+        }
+
+        public void AddContactToGroup(ContactData contact, GroupData group)
+        {
+            manager.Navigator.OpenHomePage();
+            ClearGroupFilter();
+            SelectContactCbox(contact.Id);
+            SelectGroupToAdd(group.Name);
+            ComitAddingContactToGroup();
+            new WebDriverWait(driver, TimeSpan.FromSeconds(10)).
+                Until(d => driver.FindElements(By.CssSelector("div.msgbox")).Count > 0);
+        }
+
+        public void ComitAddingContactToGroup()
+        {
+            driver.FindElement(By.Name("add")).Click();
+        }
+
+        public void SelectGroupToAdd(string name)
+        {
+            new SelectElement(driver.FindElement(By.Name("to_group"))).SelectByText(name);
+        }
+
+        public void ClearGroupFilter()
+        {
+            new SelectElement(driver.FindElement(By.Name("group"))).SelectByText("[all]");
         }
 
         public ContactData GetContactInfoFromEditForm(int index)
@@ -115,6 +141,16 @@ namespace WebAddressbookTests
             return this;
         }
 
+        public ContactHelper Remove(ContactData removed)
+        {
+            manager.Navigator.OpenHomePage();
+            SelectContact(removed.Id);
+            RemoveContact();
+            manager.Navigator.OpenHomePage();
+
+            return this;
+        }
+
         public int GetContactCount()
         {
             return driver.FindElements(By.Name("entry")).Count;
@@ -178,10 +214,30 @@ namespace WebAddressbookTests
             return this;
         }
 
+        public ContactHelper Delete(ContactData deleted)
+        {
+            manager.Navigator.OpenHomePage();
+            EditContact(deleted.Id);
+            DeleteContact();
+            manager.Navigator.OpenHomePage();
+
+            return this;
+        }
+
         public ContactHelper Edit(int index, ContactData contact)
         {
             manager.Navigator.OpenHomePage();
             EditContact(index);
+            FillContactForm(contact);
+            SubmitContactEdition();
+            manager.Navigator.ReturnToHomePage();
+            return this;
+        }
+
+        public ContactHelper Edit(ContactData modified, ContactData contact)
+        {
+            manager.Navigator.OpenHomePage();
+            EditContact(modified.Id);
             FillContactForm(contact);
             SubmitContactEdition();
             manager.Navigator.ReturnToHomePage();
@@ -209,6 +265,18 @@ namespace WebAddressbookTests
             return this;
         }
 
+        public ContactHelper SelectContactCbox(string id)
+        {
+            driver.FindElement(By.Id(id)).Click();
+            return this;
+        }
+
+        public ContactHelper SelectContact(string id)
+        {
+            driver.FindElement(By.XPath("(//input[@name='selected[]' and @value='" + id + "'])")).Click();
+            return this;
+        }
+
         public ContactHelper RemoveContact()
         {
             driver.FindElement(By.XPath("//input[@value='Delete']")).Click();
@@ -230,6 +298,12 @@ namespace WebAddressbookTests
                 .FindElements(By.TagName("td"))[7]
                 .FindElement(By.TagName("a")).Click();
             // driver.FindElement(By.XPath("(//img[@alt='Edit'])[" + index + "]")).Click();
+            return this;
+        }
+
+        public ContactHelper EditContact(string id)
+        {
+            driver.FindElement(By.XPath("//a[contains(@href,'edit.php?id=" + id + "')]")).Click();
             return this;
         }
 

@@ -11,6 +11,9 @@ namespace WebAddressbookTests
     {
         protected ApplicationManager app;
 
+        //для долгих проверок
+        public static bool PERFORM_LONG_UI_CHECKS = true;
+
         [SetUp]
         public void SetupApplicationManager()
         {

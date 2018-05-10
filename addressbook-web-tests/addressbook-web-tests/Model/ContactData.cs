@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using LinqToDB.Mapping;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,7 @@ using System.Xml.Serialization;
 
 namespace WebAddressbookTests
 {
+    [Table(Name = "addressbook")]
     public class ContactData : IEquatable<ContactData>, IComparable<ContactData>
     {
         private string allPhones;
@@ -56,28 +58,40 @@ namespace WebAddressbookTests
             return "Name: " + LastName + " " + FirstName;
         }
 
+        [Column(Name = "firstname")]
         public string FirstName { get; set; }
 
+        [Column(Name = "lastname")]
         public string LastName { get; set; }
 
+        [Column(Name = "middlename")]
         public string MiddleName { get; set; }
 
+        [Column(Name = "nickname")]
         public string NickName { get; set; }
 
+        [Column(Name = "id"), PrimaryKey, Identity]
         public string Id { get; set; }
 
+        [Column(Name = "company")]
         public string Company { get; set; }
 
+        [Column(Name = "title")]
         public string Title { get; set; }
 
+        [Column(Name = "address")]
         public string Address { get; set; }
 
+        [Column(Name = "home")]
         public string HomePhone { get; set; }
 
+        [Column(Name = "mobile")]
         public string MobilePhone { get; set; }
 
+        [Column(Name = "work")]
         public string WorkPhone { get; set; }
 
+        [Column(Name = "fax")]
         public string Fax { get; set; }
 
         private string CleanUp(string phone)
@@ -117,10 +131,13 @@ namespace WebAddressbookTests
             }
         }
 
+        [Column(Name = "email")]
         public string Email { get; set; }
 
+        [Column(Name = "email2")]
         public string Email2 { get; set; }
 
+        [Column(Name = "email3")]
         public string Email3 { get; set; }
 
         public string AllEmails
@@ -141,12 +158,16 @@ namespace WebAddressbookTests
             }
         }
 
+        [Column(Name = "homepage")]
         public string HomePage { get; set; }
 
+        [Column(Name = "address2")]
         public string AddressSec { get; set; }
 
+        [Column(Name = "phone2")]
         public string HomeSec { get; set; }
 
+        [Column(Name = "notes")]
         public string NoteSec { get; set; }
 
         private string iS(string st)
@@ -181,6 +202,18 @@ namespace WebAddressbookTests
             set
             {
                 InfoFormString = value;
+            }
+        }
+
+        [Column (Name = "deprecated")]
+        public string Deprecated { get; set; }
+
+        public static List<ContactData> GetAll()
+        {
+            //соединение и закрытие подключения автоматически  
+            using (AddressbookDB db = new AddressbookDB())
+            {
+                return (from c in db.Contacts.Where (x => x.Deprecated == "0000-00-00 00:00:00") select c).ToList();
             }
         }
     }

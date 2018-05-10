@@ -12,11 +12,11 @@ using NUnit.Framework;
 namespace WebAddressbookTests
 {
     [TestFixture]
-    public class ContactCreationTests : AuthTestBase
+    public class ContactCreationTests : ContactTestBase
     {
         public static IEnumerable<ContactData> RandomContactDataProvider()
         {
-            List<ContactData>contacts = new List<ContactData>();
+            List<ContactData> contacts = new List<ContactData>();
             for (int i = 0; i < 4; i++)
             {
                 contacts.Add(new ContactData(GenerateRandomString(30), GenerateRandomString(30))
@@ -44,13 +44,16 @@ namespace WebAddressbookTests
         [Test, TestCaseSource("ContactDataFromJsonFile")]
         public void AddContactTest(ContactData contact)
         {
-            List<ContactData> oldContacts = app.Contacts.GetContactList();
+            //List<ContactData> oldContacts = app.Contacts.GetContactList();
+            List<ContactData> oldContacts = ContactData.GetAll();
 
             app.Contacts.Create(contact);
 
            Assert.AreEqual(oldContacts.Count + 1, app.Contacts.GetContactCount());
 
-            List<ContactData> newContacts = app.Contacts.GetContactList();
+            //List<ContactData> newContacts = app.Contacts.GetContactList();
+            List<ContactData> newContacts = ContactData.GetAll();
+
             oldContacts.Add(contact);
             oldContacts.Sort();
             newContacts.Sort();

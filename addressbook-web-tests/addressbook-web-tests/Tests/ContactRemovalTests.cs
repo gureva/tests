@@ -8,7 +8,7 @@ using NUnit.Framework;
 namespace WebAddressbookTests
 {
     [TestFixture]
-    public class ContactRemovalTests : AuthTestBase
+    public class ContactRemovalTests : ContactTestBase
     {
         [Test]
         public void ContactRemovalTest()
@@ -21,14 +21,16 @@ namespace WebAddressbookTests
                 index = app.Contacts.CreateSomeContact();
             }
 
-            List<ContactData> oldContacts = app.Contacts.GetContactList();
+            //List<ContactData> oldContacts = app.Contacts.GetContactList();
+            List<ContactData> oldContacts = ContactData.GetAll();
+            ContactData toBeRemoved = oldContacts[index - 1];
 
-            app.Contacts.Remove(index);
+            app.Contacts.Remove(toBeRemoved);
 
             Assert.AreEqual(oldContacts.Count - 1, app.Contacts.GetContactCount());
 
-            List<ContactData> newContacts = app.Contacts.GetContactList();
-            ContactData toBeRemoved = oldContacts[index - 1];
+            //List<ContactData> newContacts = app.Contacts.GetContactList();
+            List<ContactData> newContacts = ContactData.GetAll();
 
             oldContacts.RemoveAt(index - 1);
             oldContacts.Sort();
@@ -53,15 +55,17 @@ namespace WebAddressbookTests
                 index = app.Contacts.CreateSomeContact();
             }
 
-            List<ContactData> oldContacts = app.Contacts.GetContactList();
+            //List<ContactData> oldContacts = app.Contacts.GetContactList();
+            List<ContactData> oldContacts = ContactData.GetAll();
+            ContactData toBeRemoved = oldContacts[index - 1];
 
-            app.Contacts.Delete(index);
+            app.Contacts.Delete(toBeRemoved);
 
             Assert.AreEqual(oldContacts.Count - 1, app.Contacts.GetContactCount());
 
-            List<ContactData> newContacts = app.Contacts.GetContactList();
-            ContactData toBeRemoved = oldContacts[index - 1];
-
+            //List<ContactData> newContacts = app.Contacts.GetContactList();
+            List<ContactData> newContacts = ContactData.GetAll();
+            
             oldContacts.RemoveAt(index - 1);
             oldContacts.Sort();
             newContacts.Sort();
@@ -70,8 +74,7 @@ namespace WebAddressbookTests
             foreach (ContactData contact in newContacts)
             {
                 Assert.AreNotEqual(contact.Id, toBeRemoved.Id);
-            }
-            //app.Auth.Logout();
+            }            
         }
     }
 }
