@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using OpenQA.Selenium;
+using OpenQA.Selenium.Support.UI;
 
 namespace WebAddressbookTests
 {
@@ -53,6 +54,12 @@ namespace WebAddressbookTests
         public void ReturnToHomePage()
         {
             driver.FindElement(By.LinkText("home page")).Click();
+            ClearGroupFilter();
+        }
+
+        public void ClearGroupFilter()
+        {
+            new SelectElement(driver.FindElement(By.Name("group"))).SelectByText("[all]");
         }
     }
 }
