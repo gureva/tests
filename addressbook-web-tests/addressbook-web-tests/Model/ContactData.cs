@@ -101,7 +101,7 @@ namespace WebAddressbookTests
                 return null;
             }
             else
-                return Regex.Replace(phone, "[ -()]", "") + "\r\n";
+                return Regex.Replace(phone, "[-() ]", "") + "\r\n";
         }
 
         private string CleanUpE(string em)
