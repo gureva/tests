@@ -12,6 +12,16 @@ namespace WebAddressbookTests
         [Test]
         public void TestAddingContactToGroup()
         {
+            if (app.Groups.IsGroupListEmpty())
+            {
+                app.Groups.CreateSomeGroup();
+            }
+
+            if (app.Contacts.IsContactListEmpty())
+            {
+                app.Contacts.CreateSomeContact();
+            }
+
             //выбираем нулевую группу
             GroupData group = GroupData.GetAll()[0];
             // список контактов в группе
@@ -19,6 +29,12 @@ namespace WebAddressbookTests
 
             //берём первый контакт, который не находится в 0 группе
             ContactData contact = ContactData.GetAll().Except(oldList).First();
+
+            //если все контакты в группе, создаём новый контакт
+            if (contact == null)
+            {
+                app.Contacts.CreateSomeContact();
+            }
 
             app.Contacts.AddContactToGroup(contact,group);
 
@@ -34,12 +50,33 @@ namespace WebAddressbookTests
         [Test]
         public void TestRemoveContactFromGroup()
         {
+            if (app.Groups.IsGroupListEmpty())
+            {
+               app.Groups.CreateSomeGroup();
+            }
+
+            if (app.Contacts.IsContactListEmpty())
+            {
+                app.Contacts.CreateSomeContact();
+            }
+
             //выбираем нулевую группу
             GroupData group = GroupData.GetAll()[0];
             // список контактов в группе
             List<ContactData> oldList = group.GetContacts();
+            ContactData contact;
 
-           ContactData contact = oldList.First();
+            // если группа пустая
+            if (oldList.Count() == 0)
+            {
+                contact = ContactData.GetAll().Except(oldList).First();
+                app.Contacts.AddContactToGroup(contact, group);
+                oldList = group.GetContacts();
+            }
+            else
+            {
+                 contact = oldList.First();
+            }
 
             app.Contacts.RemoveContactFromGroup(contact, group);
 
