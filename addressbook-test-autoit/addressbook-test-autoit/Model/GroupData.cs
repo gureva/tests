@@ -20,6 +20,10 @@ namespace addressbook_test_autoit
         {
             return this.Name.Equals(other.Name);
         }
-       
+
+        public override string ToString()
+        {
+            return "name=" + Name;
+        }
     }
 }
