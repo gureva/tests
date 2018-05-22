@@ -9,11 +9,14 @@ namespace MantisTests
     [TestFixture]
     public class AccountCreationTest : TestBase
     {
+        private string CurrentTestFolder = TestContext.CurrentContext.TestDirectory;
+
         [SetUp]
         public void setUpConfig()
         {
+
             app.Ftp.BackupFile("/config_inc.php");
-            using (Stream localfile = File.Open("C:/Users/i.gurieva/source/tests/repos/MantisTests/MantisTests/config_inc.php", FileMode.Open))
+            using (Stream localfile = File.Open(CurrentTestFolder + "/config_inc.php", FileMode.Open))
             {
                 app.Ftp.Upload("/config_inc.php", localfile);
             }
@@ -24,10 +27,13 @@ namespace MantisTests
         {
             AccountData account = new AccountData()
             {
-                Name = "testUser",
+                Name = "testUser1011",
                 Password = "123",
-                email = "testuser@localhost.localdomain"
+                email = "testuser1011@localhost.localdomain"
             };
+            
+            app.James.DeleteAccount(account);
+            app.James.Add(account);
 
             app.Registration.Register(account);
         }
