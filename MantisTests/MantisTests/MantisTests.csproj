@@ -77,12 +77,17 @@
     <Compile Include="appManager\FtpHelper.cs" />
     <Compile Include="appManager\HelperBase.cs" />
     <Compile Include="appManager\JamesHelper.cs" />
+    <Compile Include="appManager\LoginHelper.cs" />
     <Compile Include="appManager\MailHelper.cs" />
+    <Compile Include="appManager\ProjectHelper.cs" />
     <Compile Include="appManager\RegistrationHelper.cs" />
     <Compile Include="appManager\TelnetInterface.cs" />
     <Compile Include="Model\AccountData.cs" />
+    <Compile Include="Model\ProjectData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tests\AccountCreationTest.cs" />
+    <Compile Include="Tests\ProjectTests.cs" />
+    <Compile Include="Tests\AuthTestBase.cs" />
     <Compile Include="Tests\TestBase.cs" />
     <Compile Include="Tests\UnitTest1.cs" />
   </ItemGroup>

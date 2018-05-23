@@ -27,6 +27,8 @@ namespace MantisTests
             Ftp = new FtpHelper(this);
             James = new JamesHelper(this);
             Mail = new MailHelper(this);
+            Login = new LoginHelper(this);
+            Project = new ProjectHelper(this);
         }
 
         //деструктор
@@ -68,5 +70,8 @@ namespace MantisTests
         public FtpHelper Ftp { get;  set; }
         public JamesHelper James { get;  set; }
         public MailHelper Mail { get; set; }
+        public LoginHelper Login { get; set; }
+        public ProjectHelper Project { get; set; }
     }
+
 }
