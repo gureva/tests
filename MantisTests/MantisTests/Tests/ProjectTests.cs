@@ -34,27 +34,57 @@ namespace MantisTests
 			newProjects.Sort();
 			
 			Assert.AreEqual(newProjects, oldProjects);
-        }   
+        }
 
-		[Test]
+        [Test]
+        public void AddProjectWithMantis()
+        {
+            Mantis.ProjectData project = new Mantis.ProjectData() { name = "new1111" };
+
+            AccountData account = new AccountData()
+            { Name = "administrator", Password = "root" };
+
+            List<Mantis.ProjectData> oldProjects = app.API.GellAllProjects(account);
+
+            foreach (Mantis.ProjectData old in oldProjects)
+            {
+                if (old.name == project.name)
+                {
+                    project.name = project.name + "changed";
+                    return;
+                }
+            }
+
+            app.API.CreateProject(account, project);
+
+            List<Mantis.ProjectData> newProjects = app.API.GellAllProjects(account);
+            oldProjects.Add(project);
+            oldProjects.Sort();
+            newProjects.Sort();
+
+            Assert.AreEqual(newProjects, oldProjects);
+        }
+
+        [Test]
         public void DeleteProject()
         {
             // Номер проекта для удаления
             int index = 2;
+            AccountData account = new AccountData()
+            { Name = "administrator", Password = "root" };
 
             if (app.Project.IsProjectListEmpty() || app.Project.IsIndex(index))
             {
-                ProjectData project = new ProjectData() { Name = "123" };
-                 app.Project.CreateProject(project);
-                index = 1;
+                Mantis.ProjectData project = new Mantis.ProjectData() { name = "123" };
+                app.API.CreateProject(account, project); index = 1;
             }
-            List<ProjectData> oldProjects = app.Project.GetProjectList();
+            List<Mantis.ProjectData> oldProjects = app.API.GellAllProjects(account);
 
-            
+
             app.Project.DeleteProject(index);
 			
-			List<ProjectData> newProjects = app.Project.GetProjectList();
-			oldProjects.RemoveAt(0);
+			List<Mantis.ProjectData> newProjects = app.API.GellAllProjects(account);
+            oldProjects.RemoveAt(0);
 			oldProjects.Sort();
 			newProjects.Sort();
 			

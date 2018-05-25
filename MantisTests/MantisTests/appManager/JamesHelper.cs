@@ -29,7 +29,6 @@ namespace MantisTests
             TelnetConnection telnet = LoginToJames();
             telnet.WriteLine("deluser " + account.Name);
             System.Console.Out.WriteLine(telnet.Read());
-
         }
 
         public bool Verify(AccountData account)
